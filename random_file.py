@@ -10,3 +10,8 @@ class Person:
         "Initializes a new Person object."
         self.name = name
         self.connections = set()    
+        
+    def connect(self, person2):
+        if person2 not in self.connections:
+            self.connections.add(person2)
+            person2.connect(self)
