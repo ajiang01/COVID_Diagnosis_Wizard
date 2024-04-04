@@ -20,3 +20,5 @@ class Person:
         self.store = list()
         self.store.append(name)
         
+        
+        
