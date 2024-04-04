@@ -20,5 +20,12 @@ class Person:
         self.store = list()
         self.store.append(name)
         
+    def display_connections(self):
+        if self.connection_names:
+            print(f"Connections of {self.name}:")
+            for name in self.connection_names:
+                print(name)
+        else:
+            print(f"{self.name} has no connections yet.")
         
         
