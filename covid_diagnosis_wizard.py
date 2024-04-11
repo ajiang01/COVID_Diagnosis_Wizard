@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 def get_response(symptoms_file, user_symptoms):
     with open(symptoms_file, 'r') as file:
         symptoms_dict = {}
@@ -19,7 +21,7 @@ def get_response(symptoms_file, user_symptoms):
 
 def survey():
     with open("survey_responses.txt", "w", encoding = "utf-8") as file:
-        for responses in range (3):
+        for responses in range (1):
             name = input("Enter your name: ")
             file.write(f"{name}\n")
             
@@ -39,8 +41,64 @@ def survey():
             file.write(f"{sore_throat}\n")
             
 survey()
+
+def count_symptoms(users):
+    symptom_counts = {}
+    for user in users:
+        symptoms = user.get_symptoms()
+        for symptom, value in symptoms.items():
+            if value == 'yes':
+                symptom_counts[symptom] = symptom_counts.get(symptom, 0) + 1
+    return symptom_counts
+
+def covid_graph(symptom_counts):
+
+    symptom_names = list(symptom_counts.keys())
+    symptom_values = list(symptom_counts.values())
+
+    plt.figure(figsize=(10, 6))
+    plt.bar(symptom_names, symptom_values, color="skyblue")
+    plt.title("Number of Potential COVID Cases")
+    plt.xlabel("Symptoms")
+    plt.ylabel("Number of Cases")
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout()
+    plt.show()
+
+def age_groups(users):
+    age_groups = {
+        "0-19": 0,
+        "20-39": 0,
+        "40-59": 0,
+        "60-79": 0,
+        "80+": 0
+    }
+
+    for user in users:
+        age = user.get_age()
+        if age is not None:
+            if age <= 19:
+                age_groups["0-19"] += 1
+            elif age <= 39:
+                age_groups["20-39"] += 1
+            elif age <= 59:
+                age_groups["40-59"] += 1
+            elif age <= 79:
+                age_groups["60-79"] += 1
+            else:
+                age_groups["80+"] += 1
+
+    return age_groups
             
-            
-            
-            
-            
+def age_groups_graph(age_groups):
+
+    age_groups_names = list(age_groups.keys())
+    age_groups_values = list(age_groups.values())
+
+    plt.figure(figsize=(10, 6))
+    plt.bar(age_groups_names, age_groups_values, color="yellow")
+    plt.title("Age Groups and COVID Cases")
+    plt.xlabel("Age Groups")
+    plt.ylabel("Number of Cases")
+    plt.tight_layout()
+    plt.show()    
