@@ -53,17 +53,13 @@ def survey():
             
 survey()
 
-def count_symptoms(users):
-    symptom_counts = {}
-    for user in users:
-        symptoms = user.get_symptoms()
-        for symptom, value in symptoms.items():
-            if value == 'yes':
-                symptom_counts[symptom] = symptom_counts.get(symptom, 0) + 1
-    return symptom_counts
-
 def covid_graph(symptom_counts):
+    """Makes a graph of potential covid cases based symptoms
 
+    Args:
+        symptom_counts (dictionary): A dictonary of the symptoms
+        that are present and how often they occured. 
+    """
     symptom_names = list(symptom_counts.keys())
     symptom_values = list(symptom_counts.values())
 
