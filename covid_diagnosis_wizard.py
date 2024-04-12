@@ -33,6 +33,13 @@ def get_response(symptoms_file, user_symptoms):
     print(f"Based on your responses, {response}")
 
 def survey():
+    """
+    Asks for user input a series of questions 3 times to simulate an online survey
+    related to COVID.
+    
+    Side effects:
+        Creates text file containing user's inputs by line
+    """
     with open("survey_responses.txt", "w", encoding = "utf-8") as file:
         for responses in range (1):
             name = input("Enter your name: ")
@@ -53,7 +60,7 @@ def survey():
             sore_throat = input("(Yes/No) Exhibiting sore throat: ")
             file.write(f"{sore_throat}\n")
             
-survey()
+    survey()
 
 def covid_graph(symptom_counts):
     """Makes a graph of potential covid cases based symptoms
