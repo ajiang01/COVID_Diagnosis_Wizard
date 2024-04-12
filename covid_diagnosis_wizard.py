@@ -134,12 +134,21 @@ class Person:
         get_symptoms: Returns a list of the person's symptoms.
         get_age: Calculates and returns the person's age based on their birthdate.
     """
-
+    people = []
+    customers = {}
+    
     def __init__(self, name, birthdate, symptoms, report_date):
         self.name = name
         self.birthdate = birthdate
         self.symptoms = symptoms
         self.report_date = report_date
+        Person.people.append(self)
+        Person.customers[name] = {
+            'Name': name,
+            'Birthdate': birthdate,
+            'Symptoms': symptoms,
+            'Report Date': report_date
+        }
 
     def get_symptoms(self):
         """
@@ -161,7 +170,28 @@ class Person:
         birth_date = datetime.strptime(self.birthdate, "%m/%d/%y")
         today = datetime.now()
         return (today.year - birth_date.year) - ((today.month, today.day) < (birth_date.month, birth_date.day))
+    
+    def store_people_sorted_lastname(cls):
+        """
+        Class method to return the people sorted alphabetically by last name.
 
+        Returns:
+            list of Person: People sorted by last name.
+        """
+        
+        return sorted(cls.people, key = lambda person: person.name.split()[-1])
+    
+    def display_customers(cls):
+        """
+        Class method to display all customers' data stored in the class 
+        attribute `customers`.
+        
+        Returns:
+            prints each customer's name followed by their corresponding data in 
+            a formatted string.
+        """
+        for customer, data in cls.customers.items():
+            print(f"{customer}: {data}")
 
 def parse_data(filepath):
     """
