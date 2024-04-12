@@ -1,6 +1,17 @@
 import matplotlib.pyplot as plt
 
 def get_response(symptoms_file, user_symptoms):
+    """
+    Args:
+        symptoms_file (str): The path to the file that contains the symptoms 
+        and their responses.
+        
+        user_symptoms (list): The list of symptoms reported by the user.
+
+    Returns:
+        str: A message that indicates the likelihood of the user having 
+        COVID-19 based on their symptoms.
+    """
     with open(symptoms_file, 'r') as file:
         symptoms_dict = {}
         for line in file:
