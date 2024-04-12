@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+import re
+
 
 def get_response(symptoms_file, user_symptoms):
     """
@@ -113,3 +115,89 @@ def age_groups_graph(age_groups):
     plt.ylabel("Number of Cases")
     plt.tight_layout()
     plt.show()    
+    
+class Person:
+    """
+    Represents a person with details relevant to COVID-19 symptom tracking.
+
+    Attributes:
+        name (str): The full name of the person.
+        birthdate (str): The birthdate of the person formatted as "mm/dd/yy".
+        symptoms (list of str): A list of symptoms with responses ('Yes' or 'No').
+        report_date (str): The date when the symptoms were reported, formatted as "mm/dd/yy".
+
+    Methods:
+        get_symptoms: Returns a list of the person's symptoms.
+        get_age: Calculates and returns the person's age based on their birthdate.
+    """
+
+    def __init__(self, name, birthdate, symptoms, report_date):
+        self.name = name
+        self.birthdate = birthdate
+        self.symptoms = symptoms
+        self.report_date = report_date
+
+    def get_symptoms(self):
+        """
+        Returns the list of symptoms the person has reported.
+
+        Returns:
+            list of str: Symptoms reported by the person.
+        """
+        return self.symptoms
+
+    def get_age(self):
+        """
+        Calculates the person's current age based on their birthdate.
+
+        Returns:
+            int: Age of the person.
+        """
+        from datetime import datetime
+        birth_date = datetime.strptime(self.birthdate, "%m/%d/%y")
+        today = datetime.now()
+        return (today.year - birth_date.year) - ((today.month, today.day) < (birth_date.month, birth_date.day))
+
+
+def parse_data(filepath):
+    """
+    Parses a text file containing people's data formatted in specific blocks separated by lines.
+
+    Each block contains details of a person (name, birthdate, symptoms, report date) separated by ': '. 
+    The symptoms are listed with their respective responses ('Yes' or 'No') and must be processed to store only the responses.
+
+    Args:
+        filepath (str): The path to the file containing structured data blocks.
+
+    Returns:
+        list of Person: A list of Person objects created from the data in the file.
+
+    """
+    people = []
+    person_data = {}
+    with open(filepath, 'r') as file:
+        for line in file:
+            if line.strip() == "":  # Use an empty line as a separator between entries
+                if person_data:
+                    # Process the collected data block
+                    name = person_data['Name']
+                    birthdate = person_data['Birthdate']
+                    symptoms = person_data['Symptoms'].split(', ')  # Adjust based on actual symptom format
+                    symptoms = [sym.split(': ')[1] for sym in symptoms]  # Extract 'Yes' or 'No'
+                    report_date = person_data['Date']
+                    people.append(Person(name, birthdate, symptoms, report_date))
+                    person_data = {}  # Reset for next block
+            else:
+                key, value = line.strip().split(': ', 1)
+                person_data[key] = value
+
+        # Handle the last block if the file doesn't end with a blank line
+        if person_data:
+            name = person_data['Name']
+            birthdate = person_data['Birthdate']
+            symptoms = person_data['Symptoms'].split(', ')
+            symptoms = [sym.split(': ')[1] for sym in symptoms]
+            report_date = person_data['Date']
+            people.append(Person(name, birthdate, symptoms, report_date))
+
+    return people
