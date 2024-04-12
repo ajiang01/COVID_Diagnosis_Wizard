@@ -74,7 +74,12 @@ def covid_graph(symptom_counts):
     plt.tight_layout()
     plt.show()
 
-def age_groups(users):
+def agre_group_graph(person):
+    """Sees which group has the most covid cases 
+
+    Args:
+        person (person): the user of the program 
+    """
     age_groups = {
         "0-19": 0,
         "20-39": 0,
@@ -83,7 +88,7 @@ def age_groups(users):
         "80+": 0
     }
 
-    for user in users:
+    for user in person:
         age = user.get_age()
         if age is not None:
             if age <= 19:
@@ -96,11 +101,7 @@ def age_groups(users):
                 age_groups["60-79"] += 1
             else:
                 age_groups["80+"] += 1
-
-    return age_groups
-            
-def age_groups_graph(age_groups):
-
+    
     age_groups_names = list(age_groups.keys())
     age_groups_values = list(age_groups.values())
 
