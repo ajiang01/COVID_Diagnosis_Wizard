@@ -41,7 +41,7 @@ def survey():
         Creates text file containing user's inputs by line
     """
     with open("survey_responses.txt", "w", encoding = "utf-8") as file:
-        for responses in range (1):
+        for responses in range (3):
             name = input("Enter your name: ")
             file.write(f"{name}\n")
             
