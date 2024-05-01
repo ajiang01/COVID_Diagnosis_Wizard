@@ -1,4 +1,4 @@
-## import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import re
 from datetime import datetime
 
@@ -196,7 +196,6 @@ def parse_data(filepath):
                         person_data[key] = symptoms
                     else:
                         person_data[key] = value
-        # Don't forget to add the last person if file doesn't end with a blank line
         if person_data:
             people.append(create_person_from_data(person_data))
             
@@ -207,40 +206,7 @@ def create_person_from_data(data):
     return data
 
 def main():
-    # Option for the user to choose an action
-    print("Welcome to the COVID-19 Data Tracker")
-    choice = input("Choose an action: (1) Run Survey (2) Load Data (3) Exit: ")
+    survey()
     
-    if choice == '1':
-        # Run the survey if the user chooses option 1
-        survey()
-        print("Survey completed and data saved.")
-    elif choice == '2':
-        # Load data and perform analysis if the user chooses option 2
-        filepath = input("Enter the path to the data file: ")
-        try:
-            people_data = parse_data(filepath)
-            print("Data loaded successfully.")
-            # Example function call to display some data
-            # This assumes you have a function to process or display this data
-            display_data(people_data)
-        except FileNotFoundError:
-            print("File not found. Please check the file path and try again.")
-        except Exception as e:
-            print(f"An error occurred: {e}")
-    elif choice == '3':
-        # Exit the program
-        print("Exiting the program.")
-        return
-    else:
-        print("Invalid option selected. Please try again.")
-
-def display_data(people_data):
-    # Placeholder function to demonstrate handling of the data
-    # This could be replaced with more specific data handling or visualization functions
-    print("Displaying data:")
-    for person in people_data:
-        print(person)
-
 if __name__ == "__main__":
     main()
