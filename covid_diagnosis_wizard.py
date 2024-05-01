@@ -59,8 +59,6 @@ def survey():
             
             sore_throat = input("(Yes/No) Exhibiting sore throat: ")
             file.write(f"{sore_throat}\n")
-            
-    survey()
 
 def covid_graph(symptom_counts):
     """Makes a graph of potential covid cases based symptoms
@@ -235,3 +233,10 @@ def parse_data(filepath):
             people.append(Person(name, birthdate, symptoms, report_date))
 
     return people
+
+
+def main():
+    survey()
+    
+if __name__ == "__main__":
+    main()
