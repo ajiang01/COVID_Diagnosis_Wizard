@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import re
+from datetime import datetime
+
 
 
 def get_response(symptoms_file, user_symptoms):
@@ -147,27 +149,6 @@ class Person:
             'Report Date': report_date
         }
 
-    def get_symptoms(self):
-        """
-        Returns the list of symptoms the person has reported.
-
-        Returns:
-            list of str: Symptoms reported by the person.
-        """
-        return self.symptoms
-
-    def get_age(self):
-        """
-        Calculates the person's current age based on their birthdate.
-
-        Returns:
-            int: Age of the person.
-        """
-        from datetime import datetime
-        birth_date = datetime.strptime(self.birthdate, "%m/%d/%y")
-        today = datetime.now()
-        return (today.year - birth_date.year) - ((today.month, today.day) < (birth_date.month, birth_date.day))
-    
     def store_people_sorted_lastname(cls):
         """
         Class method to return the people sorted alphabetically by last name.
@@ -191,48 +172,38 @@ class Person:
             print(f"{customer}: {data}")
 
 def parse_data(filepath):
-    """
-    Parses a text file containing people's data formatted in specific blocks separated by lines.
-
-    Each block contains details of a person (name, birthdate, symptoms, report date) separated by ': '. 
-    The symptoms are listed with their respective responses ('Yes' or 'No') and must be processed to store only the responses.
-
-    Args:
-        filepath (str): The path to the file containing structured data blocks.
-
-    Returns:
-        list of Person: A list of Person objects created from the data in the file.
-
-    """
+    # Regular expressions for each piece of data
+    pattern = re.compile(r"^(Name|Birthdate|Symptoms|Date): (.+)$")
+    
     people = []
     person_data = {}
+
     with open(filepath, 'r') as file:
         for line in file:
-            if line.strip() == "":  # Use an empty line as a separator between entries
+            line = line.strip()
+            if line == "":
                 if person_data:
-                    # Process the collected data block
-                    name = person_data['Name']
-                    birthdate = person_data['Birthdate']
-                    symptoms = person_data['Symptoms'].split(', ')  # Adjust based on actual symptom format
-                    symptoms = [sym.split(': ')[1] for sym in symptoms]  # Extract 'Yes' or 'No'
-                    report_date = person_data['Date']
-                    people.append(Person(name, birthdate, symptoms, report_date))
-                    person_data = {}  # Reset for next block
+                    # When a complete person's data has been gathered, process it
+                    people.append(create_person_from_data(person_data))
+                    person_data = {}
             else:
-                key, value = line.strip().split(': ', 1)
-                person_data[key] = value
-
-        # Handle the last block if the file doesn't end with a blank line
+                match = pattern.match(line)
+                if match:
+                    key, value = match.groups()
+                    if key == 'Symptoms':
+                        # Process symptoms into a dictionary if required by other parts of the code
+                        symptoms = dict(sym.split(': ') for sym in value.split(', '))
+                        person_data[key] = symptoms
+                    else:
+                        person_data[key] = value
         if person_data:
-            name = person_data['Name']
-            birthdate = person_data['Birthdate']
-            symptoms = person_data['Symptoms'].split(', ')
-            symptoms = [sym.split(': ')[1] for sym in symptoms]
-            report_date = person_data['Date']
-            people.append(Person(name, birthdate, symptoms, report_date))
-
+            people.append(create_person_from_data(person_data))
+            
     return people
 
+def create_person_from_data(data):
+    # Assuming the person is expected to be a dictionary or similar object
+    return data
 
 def main():
     survey()
