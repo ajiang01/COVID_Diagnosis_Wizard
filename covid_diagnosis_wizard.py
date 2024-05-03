@@ -42,22 +42,22 @@ def survey():
     """
     with open("survey_responses.txt", "w", encoding = "utf-8") as file:
             name = input("Enter your name: ")
-            file.write(f"{name}\n")
+            file.write(f"{name}, ")
             
             dob = input("Enter your date of birth. Use mm/dd/yy format: ")
-            file.write(f"{dob}\n")
+            file.write(f"{dob}, ")
             
             cough = input("(Yes/No) Exhibiting persistent coughing: ")
-            file.write(f"{cough}\n")
+            file.write(f"{cough}, ")
             
             fever = input("(Yes/No) Exhibiting fever: ")
-            file.write(f"{fever}\n")
+            file.write(f"{fever}, ")
             
             nausea = input("(Yes/No) Exhibiting nausea: ")
-            file.write(f"{nausea}\n")
+            file.write(f"{nausea}, ")
             
             sore_throat = input("(Yes/No) Exhibiting sore throat: ")
-            file.write(f"{sore_throat}\n")
+            file.write(f"{sore_throat}")
 
 def covid_graph(symptom_counts):
     """Makes a graph of potential covid cases based symptoms
