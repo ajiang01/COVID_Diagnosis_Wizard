@@ -130,14 +130,12 @@ class Person:
         today = datetime.now()
         return (today.year - birth_date.year) - ((today.month, today.day) < (birth_date.month, birth_date.day))
 
-    @classmethod
     def store_people_sorted_lastname(cls):
         """
         Returns a list of people sorted by their last name.
         """
         return sorted(cls.people, key=lambda person: person.name.split()[-1])
 
-    @classmethod
     def display_customers(cls):
         """
         Prints a formatted string of all customers' data.
